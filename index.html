@@ -1,19 +1,95 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ọjà Pantry</title>
-    <meta name="description" content="Nigerian spices and condiments, properly made. Pay on delivery." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ọjà Pantry</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F4EEE3;--deep:#EAE1D0;--ink:#1A1714;--soft:#5C544B;--pepper:#B8321E}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 Fraunces,Georgia,serif}
+.w{max-width:1200px;margin:0 auto;padding:0 20px}
+nav{border-bottom:1px solid var(--ink)}nav .w{display:flex;justify-content:space-between;align-items:center;min-height:56px;flex-wrap:wrap}
+.m,button,nav a,label{font:500 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
+a{color:inherit}nav a{margin-left:16px;text-decoration:none}.cnt{color:var(--pepper)}
+h1{font-size:44px;line-height:.95;margin:48px 0 12px;font-weight:600}
+.grid{display:grid;gap:0;border-top:1px solid var(--ink)}
+@media(min-width:768px){.grid{grid-template-columns:1fr 1fr}h1{font-size:72px}}@media(min-width:1100px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.card{padding:20px;border-bottom:1px solid var(--ink);border-right:1px solid var(--ink)}
+.tile{aspect-ratio:1;padding:12px;display:flex;flex-direction:column;justify-content:space-between;font-size:26px}
+.t0,.t2{background:var(--deep)}.t1{background:var(--ink);color:var(--paper)}.t3{background:var(--pepper);color:var(--paper)}
+select,input,textarea{width:100%;min-height:48px;background:var(--deep);border:0;border-bottom:1px solid var(--ink);font:17px Fraunces,serif;padding:8px;margin:4px 0 12px;border-radius:0}
+button{min-height:48px;padding:0 20px;background:var(--ink);color:var(--paper);border:0;cursor:pointer;border-radius:0}
+button:hover{background:var(--pepper)}button:disabled{opacity:.4;cursor:not-allowed}button.s{background:none;color:var(--ink);border:1px solid var(--ink)}
+:focus-visible{outline:2px solid var(--pepper);outline-offset:2px}
+table{width:100%;border-collapse:collapse}td{padding:12px 4px;border-bottom:1px solid var(--ink)}td:last-child{text-align:right}
+.err{color:var(--pepper)}.ok{color:#3E5A3A}footer{margin:72px 0 32px;border-top:1px solid var(--ink);padding-top:16px;color:var(--soft)}
+</style></head><body>
+<nav><div class="w"><a href="#/" style="font-weight:600;font-size:22px;text-transform:none;letter-spacing:0;margin:0">Ọjà Pantry</a>
+<div><a href="#/">Shop</a><a href="#/cart">Cart <span class="cnt" id="cnt">(0)</span></a><a href="#" id="auth"></a></div></div></nav>
+<main class="w" id="app" aria-live="polite"></main>
+<footer class="w">Pay on delivery · Delivered in Lagos in 2–3 days · Built for HNG Internship 15</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+// Public values only. Paste the publishable key (never the secret key).
+const SB_URL='https://riktqoccrrrjdtzcemgz.supabase.co', SB_KEY='sb_publishable__pJzqw_lMKddIh5urmdKbw_cq7UDgM-';
+const sb=SB_KEY.startsWith('PASTE')?null:supabase.createClient(SB_URL,SB_KEY);
+const FALLBACK=[["Yaji Suya Spice","Kano-style suya pepper: groundnut, ginger, cayenne.",[["100g",250000],["250g",500000]]],
+["Ata Dindin Pepper Sauce","Slow-fried tatashe and scotch bonnet in oil.",[["250ml",350000],["500ml",600000]]],
+["Zobo Mix","Dried hibiscus with ginger, clove and pineapple peel.",[["200g",200000],["500g",450000]]],
+["Crayfish Powder","Sun-dried crayfish, finely ground, no sand.",[["200g",400000],["500g",900000]]],
+["Ground Egusi","Cleaned, milled melon seed for soup.",[["500g",550000],["1kg",1000000]]],
+["Ofada Stew Base","Green pepper and locust bean base.",[["500ml",750000]]],
+["Ehuru","Whole calabash nutmeg for pepper soup.",[["50g",300000]]],
+["Red Palm Oil","Unbleached oil from a single Imo farm.",[["1L",450000],["2L",850000]]]]
+.map((p,i)=>({name:p[0],description:p[1],product_variants:p[2].map((v,j)=>({id:null,label:v[0],price_kobo:v[1],stock:25}))}));
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const naira=k=>'₦'+Math.round(k/100).toLocaleString('en-NG');
+let products=[],user=null,cart=JSON.parse(localStorage.getItem('cart')||'[]');
+const save=()=>{localStorage.setItem('cart',JSON.stringify(cart));$('#cnt').textContent='('+cart.reduce((n,l)=>n+l.qty,0)+')'};
+async function load(){
+  if(sb){const {data,error}=await sb.from('products').select('name,description,sort_order,product_variants(id,label,price_kobo,stock,sort_order)').eq('active',true).order('sort_order');
+    if(!error&&data.length){products=data;return}console.error(error)}
+  products=FALLBACK}
+function home(){
+  $('#app').innerHTML='<h1>Pantry staples, properly made.</h1><p>Yaji, crayfish, egusi and more, from small Nigerian producers. Pay on delivery.</p><div class="grid">'+
+  products.map((p,i)=>{const vs=p.product_variants.slice().sort((a,b)=>a.price_kobo-b.price_kobo);
+   return `<div class="card"><div class="tile t${i%4}"><span class="m">No. ${String(i+1).padStart(2,'0')}</span><span>${esc(p.name)}</span></div>
+   <p>${esc(p.description)}</p><label for="v${i}">Size</label><select id="v${i}">${vs.map((v,j)=>`<option value="${j}">${esc(v.label)} · ${naira(v.price_kobo)}</option>`).join('')}</select>
+   <button onclick="add(${i})">Add to cart</button></div>`}).join('')+'</div>'}
+function add(i){const p=products[i],v=p.product_variants.slice().sort((a,b)=>a.price_kobo-b.price_kobo)[$('#v'+i).value];
+  const l=cart.find(x=>x.label===v.label&&x.name===p.name);l?l.qty=Math.min(10,l.qty+1):cart.push({vid:v.id,name:p.name,label:v.label,price:v.price_kobo,qty:1});save();$('#cnt').focus&&0}
+const total=()=>{const s=cart.reduce((n,l)=>n+l.price*l.qty,0),d=s>=3000000||!s?0:250000;return{s,d,t:s+d}};
+function cartPage(){
+  if(!cart.length){$('#app').innerHTML='<h1>Your basket is empty.</h1><a href="#/">Browse the shelves →</a>';return}
+  const t=total();$('#app').innerHTML='<h1>Cart</h1><table>'+cart.map((l,i)=>`<tr><td>${esc(l.name)} <span class="m">${esc(l.label)}</span></td>
+  <td><button class="s" aria-label="Less" onclick="qty(${i},-1)">−</button> ${l.qty} <button class="s" aria-label="More" onclick="qty(${i},1)">+</button></td><td>${naira(l.price*l.qty)}</td></tr>`).join('')+
+  `</table><p class="m">Estimated: confirmed at checkout</p><p>Subtotal ${naira(t.s)} · Delivery ${naira(t.d)} · <b>Total ${naira(t.t)}</b></p><button onclick="location.hash='#/checkout'">Checkout</button>`}
+function qty(i,d){cart[i].qty+=d;if(cart[i].qty<1)cart.splice(i,1);else cart[i].qty=Math.min(10,cart[i].qty);save();cartPage()}
+function checkout(){
+  if(!cart.length)return location.hash='#/cart';
+  if(sb&&!user){$('#app').innerHTML='<h1>Checkout</h1><p>Sign in with Google to check out. It keeps your orders together.</p><button onclick="signin()">Sign in with Google</button>';return}
+  const t=total();$('#app').innerHTML=`<h1>Checkout</h1><p class="m">${user?'Signed in as '+esc(user.email):''}</p>
+  <label for="n">Full name</label><input id="n" value="${esc(user?.user_metadata?.full_name||'')}"><label for="p">Phone</label><input id="p" type="tel">
+  <label for="a">Delivery address</label><input id="a"><label for="c">City</label><input id="c"><label for="s">State</label><input id="s">
+  <label for="o">Delivery note (optional)</label><textarea id="o"></textarea><p>Total (estimate) <b>${naira(t.t)}</b> · Pay on delivery</p>
+  <p class="err" role="alert" id="e"></p><button id="go" onclick="place()">Place order</button>`}
+async function place(){
+  const d={customer_name:$('#n').value.trim(),phone:$('#p').value.trim(),address:$('#a').value.trim(),city:$('#c').value.trim(),state:$('#s').value.trim(),note:$('#o').value.trim()};
+  if(!d.customer_name||!d.phone||!d.address||!d.city||!d.state){$('#e').textContent='↳ Please fill in every field except the note.';return}
+  const b=$('#go');b.disabled=true;b.textContent='Placing order…';let num;
+  if(sb&&cart.every(l=>l.vid)){
+    const {data,error}=await sb.rpc('place_order',{p_items:cart.map(l=>({variant_id:l.vid,quantity:l.qty})),p_delivery:d});
+    if(error){console.error(error);$('#e').textContent='↳ '+(/out_of_stock/.test(error.message)?'An item is sold out.':'Something went wrong on our side. Your cart is safe. Try again.');b.disabled=false;b.textContent='Place order';return}
+    num=data[0].order_number}
+  else{num='OJA-'+(100001+Math.floor(Math.random()*900));}
+  const t=total();localStorage.setItem('last',JSON.stringify({num,t,cart,d,saved:!!sb}));cart=[];save();location.hash='#/order'}
+function order(){const o=JSON.parse(localStorage.getItem('last')||'null');if(!o){location.hash='#/';return}
+  $('#app').innerHTML=`<h1>Order ${esc(o.num)} is in!</h1><table>${o.cart.map(l=>`<tr><td>${esc(l.name)} ${esc(l.label)} × ${l.qty}</td><td>${naira(l.price*l.qty)}</td></tr>`).join('')}</table>
+  <p>Delivery ${naira(o.t.d)} · <b>Total ${naira(o.t.t)}</b></p><p>Deliver to ${esc(o.d.address)}, ${esc(o.d.city)}. Pay on delivery. We'll call before delivery.</p>
+  <p class="${o.saved?'ok':'err'}">${o.saved?'Your order is saved.':'Demo mode: this order was not saved to the database.'}</p>`}
+async function signin(){await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/#/checkout'}})}
+function authUI(){const a=$('#auth');if(!sb){a.style.display='none';return}a.textContent=user?'Sign out':'Sign in';a.onclick=async e=>{e.preventDefault();user?(await sb.auth.signOut()):signin()}}
+function route(){const h=location.hash;({'#/cart':cartPage,'#/checkout':checkout,'#/order':order})[h]?.()||home()}
+(async()=>{save();if(sb){const {data}=await sb.auth.getSession();user=data.session?.user||null;
+  sb.auth.onAuthStateChange((_e,s)=>{user=s?.user||null;authUI();route()})}
+  authUI();$('#app').innerHTML='<p><i>Fetching the shelves…</i></p>';await load();route()})();
+addEventListener('hashchange',route);
+</script></body></html>

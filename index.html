@@ -38,9 +38,13 @@ footer{margin:72px 0 32px;border-top:1px solid var(--ink);padding-top:16px;color
 .strip{display:flex;flex-wrap:wrap;gap:8px 32px;padding:14px 0;border-bottom:1px solid var(--ink);color:var(--soft)}
 .tools{display:grid;gap:12px;margin-top:40px}@media(min-width:700px){.tools{grid-template-columns:2fr 1fr;gap:24px}}
 .card{transition:background .15s}.card:hover{background:var(--deep)}
+.who{display:inline-flex;align-items:center;gap:8px;margin-left:18px;vertical-align:middle}
+.av{width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--paper);display:inline-flex;align-items:center;justify-content:center;font:500 14px 'IBM Plex Mono',monospace}
+nav .w{flex-wrap:wrap;padding-top:4px;padding-bottom:4px}nav .w>div{display:flex;align-items:center;flex-wrap:wrap}
+@media(max-width:520px){.nm{display:none}nav a{margin-left:12px}.who{margin-left:12px}}
 </style></head><body>
 <nav><div class="w"><a href="#/" class="logo">Ọjà Pantry</a>
-<div><a href="#/">Shop</a><a href="#/orders" id="ord" style="display:none">Orders</a><a href="#/cart">Cart <span class="cnt" id="cnt">(0)</span></a><a href="#" id="auth"></a></div></div></nav>
+<div><a href="#/">Shop</a><a href="#/orders" id="ord" style="display:none">Orders</a><a href="#/cart">Cart <span class="cnt" id="cnt">(0)</span></a><span id="who" class="who"></span><a href="#" id="auth"></a></div></div></nav>
 <main class="w" id="app" aria-live="polite"></main>
 <div id="bar" role="status"><span>Added to your basket</span><button onclick="location.hash='#/cart'">View cart</button></div>
 <footer class="w">Pay on delivery · Delivered in Lagos in 2–3 days · Built for HNG Internship 15</footer>
@@ -130,8 +134,12 @@ function order(){const o=JSON.parse(localStorage.getItem('last')||'null');if(!o)
   <p>Delivery ${naira(o.t.d)} · <b>Total ${naira(o.t.t)}</b></p><p>Deliver to ${esc(o.d.address)}, ${esc(o.d.city)}. Pay on delivery. We'll call before delivery.</p>
   <p class="${o.saved?'ok':'err'}">${o.saved?'Your order is saved.':'Demo mode: this order was not saved to the database.'}</p>`}
 async function signin(){localStorage.setItem('ret','#/checkout');await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/'}})}
-function authUI(){const a=$('#auth');if(!sb){a.style.display='none';return}a.textContent=user?'Sign out':'Sign in';$('#ord').style.display=user?'inline-block':'none';a.onclick=async e=>{e.preventDefault();user?(await sb.auth.signOut()):signin()}}
-function route(){const h=location.hash;({'#/cart':cartPage,'#/checkout':checkout,'#/order':order,'#/orders':orders})[h]?.()||home()}
+function authUI(){const a=$('#auth'),w=$('#who');if(!sb){a.style.display='none';return}
+  const n=user?String(user.user_metadata?.full_name||user.email||'?'):'';
+  w.innerHTML=user?`<span class="av" title="${esc(user.email||'')}">${esc(n[0].toUpperCase())}</span><span class="m nm">${esc(n.split(' ')[0])}</span>`:'';
+  a.textContent=user?'Sign out':'Sign in';$('#ord').style.display=user?'inline-block':'none';
+  a.onclick=async e=>{e.preventDefault();if(user){await sb.auth.signOut();location.hash='#/'}else signin()}}
+function route(){const f={'#/cart':cartPage,'#/checkout':checkout,'#/order':order,'#/orders':orders}[location.hash];f?f():home();scrollTo(0,0)}
 (async()=>{save();if(sb){const {data}=await sb.auth.getSession();user=data.session?.user||null;
   sb.auth.onAuthStateChange((_e,s)=>{user=s?.user||null;authUI();const r=localStorage.getItem('ret');if(user&&r){localStorage.removeItem('ret');history.replaceState(null,'',location.pathname);location.hash=r}route()})}
   authUI();$('#app').innerHTML='<p><i>Fetching the shelves…</i></p>';await load();route()})();

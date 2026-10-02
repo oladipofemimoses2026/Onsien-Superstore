@@ -3,34 +3,52 @@
 <title>Ọjà Pantry</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#F4EEE3;--deep:#EAE1D0;--ink:#1A1714;--soft:#5C544B;--pepper:#B8321E}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 Fraunces,Georgia,serif}
+:root{--paper:#F4EEE3;--deep:#EAE1D0;--ink:#1A1714;--soft:#5C544B;--pepper:#B8321E;--leaf:#3E5A3A}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 Fraunces,Georgia,serif}
 .w{max-width:1200px;margin:0 auto;padding:0 20px}
-nav{border-bottom:1px solid var(--ink)}nav .w{display:flex;justify-content:space-between;align-items:center;min-height:56px;flex-wrap:wrap}
-.m,button,nav a,label{font:500 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
-a{color:inherit}nav a{margin-left:16px;text-decoration:none}.cnt{color:var(--pepper)}
-h1{font-size:44px;line-height:.95;margin:48px 0 12px;font-weight:600}
-.grid{display:grid;gap:0;border-top:1px solid var(--ink)}
-@media(min-width:768px){.grid{grid-template-columns:1fr 1fr}h1{font-size:72px}}@media(min-width:1100px){.grid{grid-template-columns:1fr 1fr 1fr}}
-.card{padding:20px;border-bottom:1px solid var(--ink);border-right:1px solid var(--ink)}
-.tile{aspect-ratio:1;padding:12px;display:flex;flex-direction:column;justify-content:space-between;font-size:26px}
+.m,button,nav a,label,.step{font:500 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
+a{color:inherit}
+nav{border-bottom:1px solid var(--ink);position:sticky;top:0;background:var(--paper);z-index:5}
+nav .w{display:flex;justify-content:space-between;align-items:center;min-height:56px}
+nav a{margin-left:18px;text-decoration:none;padding:12px 0;display:inline-block}nav a:hover,nav a.on{border-bottom:2px solid var(--pepper)}
+.logo{font:600 22px Fraunces,serif!important;text-transform:none!important;letter-spacing:0!important;margin:0!important;border:0!important}
+.cnt{color:var(--pepper)}
+.hero{display:grid;gap:24px;padding:56px 0 48px;border-bottom:1px solid var(--ink)}
+h1{font-size:44px;line-height:.95;letter-spacing:-.02em;margin:0 0 16px;font-weight:600}h2{font-size:28px;margin:32px 0 12px}
+.lead{max-width:48ch;color:var(--soft)}
+@media(min-width:900px){.hero{grid-template-columns:2fr 1fr;align-items:end;padding:96px 0 72px}h1{font-size:88px}}
+.grid{display:grid;border-left:1px solid var(--ink);margin:48px 0}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}@media(min-width:1050px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.card{padding:20px;border:1px solid var(--ink);border-left:0;margin:0 0 -1px}
+.tile{aspect-ratio:1;padding:14px;display:flex;flex-direction:column;justify-content:space-between;font-size:30px;line-height:1.05}
 .t0,.t2{background:var(--deep)}.t1{background:var(--ink);color:var(--paper)}.t3{background:var(--pepper);color:var(--paper)}
-select,input,textarea{width:100%;min-height:48px;background:var(--deep);border:0;border-bottom:1px solid var(--ink);font:17px Fraunces,serif;padding:8px;margin:4px 0 12px;border-radius:0}
-button{min-height:48px;padding:0 20px;background:var(--ink);color:var(--paper);border:0;cursor:pointer;border-radius:0}
-button:hover{background:var(--pepper)}button:disabled{opacity:.4;cursor:not-allowed}button.s{background:none;color:var(--ink);border:1px solid var(--ink)}
-:focus-visible{outline:2px solid var(--pepper);outline-offset:2px}
-table{width:100%;border-collapse:collapse}td{padding:12px 4px;border-bottom:1px solid var(--ink)}td:last-child{text-align:right}
-.err{color:var(--pepper)}.ok{color:#3E5A3A}footer{margin:72px 0 32px;border-top:1px solid var(--ink);padding-top:16px;color:var(--soft)}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.price{font:500 16px 'IBM Plex Mono',monospace}
+select,input,textarea{width:100%;min-height:48px;background:var(--deep);border:0;border-bottom:1px solid var(--ink);font:17px Fraunces,serif;padding:8px;margin:4px 0 14px;border-radius:0;color:var(--ink)}
+button{min-height:48px;padding:0 22px;background:var(--ink);color:var(--paper);border:0;cursor:pointer;border-radius:0}
+button:hover{background:var(--pepper)}button:disabled{opacity:.4;cursor:not-allowed}button.s{background:none;color:var(--ink);border:1px solid var(--ink);min-width:44px;padding:0}button.s:hover{background:var(--deep)}
+.full{width:100%}:focus-visible{outline:2px solid var(--pepper);outline-offset:2px}
+.steps{display:flex;gap:8px;margin:40px 0 0;flex-wrap:wrap}.step{padding:6px 10px;border:1px solid var(--ink);color:var(--soft)}.step.on{background:var(--ink);color:var(--paper)}
+table{width:100%;border-collapse:collapse;margin:16px 0}td{padding:14px 4px;border-bottom:1px solid var(--ink);vertical-align:middle}td:last-child{text-align:right;font-family:'IBM Plex Mono',monospace}
+.panel{background:var(--deep);padding:20px;margin:24px 0}.two{display:grid;gap:32px}@media(min-width:900px){.two{grid-template-columns:7fr 5fr}}
+.err{color:var(--pepper)}.ok{color:var(--leaf)}.soft{color:var(--soft)}
+#bar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--paper);padding:12px 20px;display:none;justify-content:space-between;align-items:center;z-index:9}
+#bar button{background:var(--paper);color:var(--ink);min-height:40px}
+footer{margin:72px 0 32px;border-top:1px solid var(--ink);padding-top:16px;color:var(--soft)}
+.art{width:100%;display:block}.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-self:end}.trio .art{border-bottom:1px solid var(--ink)}
+.strip{display:flex;flex-wrap:wrap;gap:8px 32px;padding:14px 0;border-bottom:1px solid var(--ink);color:var(--soft)}
+.tools{display:grid;gap:12px;margin-top:40px}@media(min-width:700px){.tools{grid-template-columns:2fr 1fr;gap:24px}}
+.card{transition:background .15s}.card:hover{background:var(--deep)}
 </style></head><body>
-<nav><div class="w"><a href="#/" style="font-weight:600;font-size:22px;text-transform:none;letter-spacing:0;margin:0">Ọjà Pantry</a>
-<div><a href="#/">Shop</a><a href="#/cart">Cart <span class="cnt" id="cnt">(0)</span></a><a href="#" id="auth"></a></div></div></nav>
+<nav><div class="w"><a href="#/" class="logo">Ọjà Pantry</a>
+<div><a href="#/">Shop</a><a href="#/orders" id="ord" style="display:none">Orders</a><a href="#/cart">Cart <span class="cnt" id="cnt">(0)</span></a><a href="#" id="auth"></a></div></div></nav>
 <main class="w" id="app" aria-live="polite"></main>
+<div id="bar" role="status"><span>Added to your basket</span><button onclick="location.hash='#/cart'">View cart</button></div>
 <footer class="w">Pay on delivery · Delivered in Lagos in 2–3 days · Built for HNG Internship 15</footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 // Public values only. Paste the publishable key (never the secret key).
 const SB_URL='https://riktqoccrrrjdtzcemgz.supabase.co', SB_KEY='sb_publishable__pJzqw_lMKddIh5urmdKbw_cq7UDgM-';
-const sb=SB_KEY.startsWith('PASTE')?null:supabase.createClient(SB_URL,SB_KEY);
+const sb=SB_KEY.startsWith('PASTE')?null:supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:'pkce'}});
 const FALLBACK=[["Yaji Suya Spice","Kano-style suya pepper: groundnut, ginger, cayenne.",[["100g",250000],["250g",500000]]],
 ["Ata Dindin Pepper Sauce","Slow-fried tatashe and scotch bonnet in oil.",[["250ml",350000],["500ml",600000]]],
 ["Zobo Mix","Dried hibiscus with ginger, clove and pineapple peel.",[["200g",200000],["500g",450000]]],
@@ -47,26 +65,52 @@ const save=()=>{localStorage.setItem('cart',JSON.stringify(cart));$('#cnt').text
 async function load(){
   if(sb){const {data,error}=await sb.from('products').select('name,description,sort_order,product_variants(id,label,price_kobo,stock,sort_order)').eq('active',true).order('sort_order');
     if(!error&&data.length){products=data;return}console.error(error)}
-  products=FALLBACK}
+  products=FALLBACK;window.demo=true}
+const COL=['#C4561E','#A3261A','#6B1F3A','#B7843F','#7A8B3A','#3E5A3A','#5A3A22','#D9531E'],TY=['p','b','p','p','p','j','p','b'],
+NM=['Yaji','Ata Dindin','Zobo','Crayfish','Egusi','Ofada','Ehuru','Palm Oil'];
+function art(k,bare){const c=COL[k%8],t=TY[k%8],bg=['#EAE1D0','#1A1714','#EAE1D0','#B8321E'][k%4];
+ const body=t=='b'?`<rect x="85" y="34" width="30" height="30" fill="#1A1714"/><rect x="90" y="24" width="20" height="12" fill="#1A1714"/><path d="M70 64h60l10 14v90H60V78z" fill="${c}"/>`
+  :t=='j'?`<rect x="62" y="48" width="76" height="22" fill="#1A1714"/><rect x="54" y="70" width="92" height="100" rx="8" fill="${c}"/>`
+  :`<path d="M52 36h96l6 14v118a8 8 0 0 1-8 8H54a8 8 0 0 1-8-8V50z" fill="${c}"/><rect x="46" y="36" width="108" height="10" fill="#1A1714" opacity=".3"/>`;
+ return `<svg viewBox="0 0 200 200" class="art" role="img" aria-label="${NM[k%8]} pack">${bare?'':`<rect width="200" height="200" fill="${bg}"/>`}<ellipse cx="100" cy="182" rx="56" ry="5" fill="#1A1714" opacity=".18"/>${body}<rect x="66" y="98" width="68" height="46" fill="#F4EEE3"/><text x="100" y="118" text-anchor="middle" font-family="Fraunces,serif" font-size="12" font-weight="600" fill="#1A1714">${NM[k%8]}</text><rect x="78" y="127" width="44" height="2" fill="#1A1714"/><rect x="84" y="134" width="32" height="2" fill="#1A1714"/></svg>`}
+let q='',sortBy='';
+const sortedV=p=>p.product_variants.slice().sort((a,b)=>a.price_kobo-b.price_kobo);
 function home(){
-  $('#app').innerHTML='<h1>Pantry staples, properly made.</h1><p>Yaji, crayfish, egusi and more, from small Nigerian producers. Pay on delivery.</p><div class="grid">'+
-  products.map((p,i)=>{const vs=p.product_variants.slice().sort((a,b)=>a.price_kobo-b.price_kobo);
-   return `<div class="card"><div class="tile t${i%4}"><span class="m">No. ${String(i+1).padStart(2,'0')}</span><span>${esc(p.name)}</span></div>
-   <p>${esc(p.description)}</p><label for="v${i}">Size</label><select id="v${i}">${vs.map((v,j)=>`<option value="${j}">${esc(v.label)} · ${naira(v.price_kobo)}</option>`).join('')}</select>
-   <button onclick="add(${i})">Add to cart</button></div>`}).join('')+'</div>'}
-function add(i){const p=products[i],v=p.product_variants.slice().sort((a,b)=>a.price_kobo-b.price_kobo)[$('#v'+i).value];
-  const l=cart.find(x=>x.label===v.label&&x.name===p.name);l?l.qty=Math.min(10,l.qty+1):cart.push({vid:v.id,name:p.name,label:v.label,price:v.price_kobo,qty:1});save();$('#cnt').focus&&0}
+  $('#app').innerHTML=`<section class="hero"><div><p class="m soft">Ọjà Pantry · Lagos</p><h1>Pantry staples, properly made.</h1><p class="lead">Yaji, crayfish, egusi and more, from small Nigerian producers. Pay on delivery.</p><button onclick="document.getElementById('shop').scrollIntoView()">Shop the shelves ↓</button></div>
+  <div class="trio" aria-hidden="true">${art(0,1)}${art(7,1)}${art(5,1)}</div></section>
+  <div class="strip m"><span>Pay on delivery</span><span>Free delivery over ₦30,000</span><span>Lagos in 2–3 days</span></div>
+  ${window.demo?'<p class="m err">Showing sample catalogue (database not reachable)</p>':''}
+  <div class="tools" id="shop"><div><label for="q">Search</label><input id="q" placeholder="yaji, egusi, oil…" value="${esc(q)}" oninput="q=this.value;list()"></div>
+  <div><label for="so">Sort by</label><select id="so" onchange="sortBy=this.value;list()"><option value="">Featured</option><option value="lo" ${sortBy=='lo'?'selected':''}>Price: low to high</option><option value="hi" ${sortBy=='hi'?'selected':''}>Price: high to low</option><option value="az" ${sortBy=='az'?'selected':''}>Name A–Z</option></select></div></div>
+  <div class="grid" id="list"></div>`;list()}
+function list(){
+  let it=products.map((p,k)=>({p,k})).filter(({p})=>(p.name+' '+p.description).toLowerCase().includes(q.toLowerCase()));
+  const lo=x=>sortedV(x.p)[0].price_kobo;
+  if(sortBy=='lo')it.sort((a,b)=>lo(a)-lo(b));if(sortBy=='hi')it.sort((a,b)=>lo(b)-lo(a));if(sortBy=='az')it.sort((a,b)=>a.p.name.localeCompare(b.p.name));
+  $('#list').innerHTML=it.length?it.map(({p,k})=>{const vs=sortedV(p);
+   return `<article class="card">${art(k)}<div class="row" style="margin-top:14px"><b>${esc(p.name)}</b><span class="price">from ${naira(vs[0].price_kobo)}</span></div><p class="soft">${esc(p.description)}</p>
+   <label for="v${k}">Size</label><select id="v${k}">${vs.map((v,j)=>`<option value="${j}" ${v.stock<1?'disabled':''}>${esc(v.label)} · ${naira(v.price_kobo)}${v.stock<1?' (sold out)':''}</option>`).join('')}</select>
+   <button class="full" onclick="add(${k})">Add to cart</button></article>`}).join(''):'<p class="soft" style="padding:24px">Nothing matches that search. <a href="#/" onclick="q=\'\'">Clear it</a></p>'}
+async function orders(){
+  if(!sb||!user){$('#app').innerHTML='<h2>My orders</h2><p class="soft">Sign in to see your orders.</p><button onclick="signin()">Sign in with Google</button>';return}
+  $('#app').innerHTML='<h2>My orders</h2><p><i>Fetching your orders…</i></p>';
+  const {data,error}=await sb.from('orders').select('order_number,total_kobo,created_at,order_items(product_name,option_label,quantity)').order('created_at',{ascending:false});
+  if(error){console.error(error);$('#app').innerHTML='<h2>My orders</h2><p class="err">Could not load orders: '+esc(error.message)+'</p>';return}
+  $('#app').innerHTML='<h2>My orders</h2>'+(data.length?data.map(o=>`<div class="panel"><div class="row"><b>${esc(o.order_number)}</b><span class="price">${naira(o.total_kobo)}</span></div><p class="m soft">${new Date(o.created_at).toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'numeric'})}</p><p>${o.order_items.map(i=>esc(i.product_name)+' '+esc(i.option_label)+' × '+i.quantity).join('<br>')}</p></div>`).join(''):'<p class="soft">No orders yet. <a href="#/">Browse the shelves →</a></p>')}
+function add(i){const p=products[i],v=sortedV(p)[$('#v'+i).value];
+  const l=cart.find(x=>x.label===v.label&&x.name===p.name);l?l.qty=Math.min(10,l.qty+1):cart.push({vid:v.id,name:p.name,label:v.label,price:v.price_kobo,qty:1});save();const b=$('#bar');b.style.display='flex';clearTimeout(window.bt);window.bt=setTimeout(()=>b.style.display='none',3500)}
 const total=()=>{const s=cart.reduce((n,l)=>n+l.price*l.qty,0),d=s>=3000000||!s?0:250000;return{s,d,t:s+d}};
+const steps=n=>'<div class="steps">'+['1 Cart','2 Details','3 Confirmed'].map((t,i)=>`<span class="step ${i==n?'on':''}">${t}</span>`).join('')+'</div>';
 function cartPage(){
   if(!cart.length){$('#app').innerHTML='<h1>Your basket is empty.</h1><a href="#/">Browse the shelves →</a>';return}
-  const t=total();$('#app').innerHTML='<h1>Cart</h1><table>'+cart.map((l,i)=>`<tr><td>${esc(l.name)} <span class="m">${esc(l.label)}</span></td>
+  const t=total();$('#app').innerHTML=steps(0)+'<h2>Your basket</h2><table>'+cart.map((l,i)=>`<tr><td>${esc(l.name)} <span class="m">${esc(l.label)}</span></td>
   <td><button class="s" aria-label="Less" onclick="qty(${i},-1)">−</button> ${l.qty} <button class="s" aria-label="More" onclick="qty(${i},1)">+</button></td><td>${naira(l.price*l.qty)}</td></tr>`).join('')+
-  `</table><p class="m">Estimated: confirmed at checkout</p><p>Subtotal ${naira(t.s)} · Delivery ${naira(t.d)} · <b>Total ${naira(t.t)}</b></p><button onclick="location.hash='#/checkout'">Checkout</button>`}
+  `</table><p class="m">Estimated: confirmed at checkout</p><div class="panel"><div class="row"><span>Subtotal</span><span class="price">${naira(t.s)}</span></div><div class="row"><span>Delivery</span><span class="price">${t.d?naira(t.d):'Free'}</span></div><div class="row"><b>Total</b><b class="price">${naira(t.t)}</b></div>${t.s<3000000?`<p class="m soft">${naira(3000000-t.s)} more for free delivery</p>`:''}</div><button class="full" onclick="location.hash='#/checkout'">Continue to checkout</button>`}
 function qty(i,d){cart[i].qty+=d;if(cart[i].qty<1)cart.splice(i,1);else cart[i].qty=Math.min(10,cart[i].qty);save();cartPage()}
 function checkout(){
   if(!cart.length)return location.hash='#/cart';
-  if(sb&&!user){$('#app').innerHTML='<h1>Checkout</h1><p>Sign in with Google to check out. It keeps your orders together.</p><button onclick="signin()">Sign in with Google</button>';return}
-  const t=total();$('#app').innerHTML=`<h1>Checkout</h1><p class="m">${user?'Signed in as '+esc(user.email):''}</p>
+  if(sb&&!user){$('#app').innerHTML=steps(1)+'<h2>Sign in to check out</h2><p class="soft">Sign in with Google to check out. It keeps your orders together.</p><button onclick="signin()">Sign in with Google</button>';return}
+  const t=total();$('#app').innerHTML=steps(1)+`<h2>Delivery details</h2><p class="m soft">${user?'Signed in as '+esc(user.email):''}</p>
   <label for="n">Full name</label><input id="n" value="${esc(user?.user_metadata?.full_name||'')}"><label for="p">Phone</label><input id="p" type="tel">
   <label for="a">Delivery address</label><input id="a"><label for="c">City</label><input id="c"><label for="s">State</label><input id="s">
   <label for="o">Delivery note (optional)</label><textarea id="o"></textarea><p>Total (estimate) <b>${naira(t.t)}</b> · Pay on delivery</p>
@@ -77,19 +121,19 @@ async function place(){
   const b=$('#go');b.disabled=true;b.textContent='Placing order…';let num;
   if(sb&&cart.every(l=>l.vid)){
     const {data,error}=await sb.rpc('place_order',{p_items:cart.map(l=>({variant_id:l.vid,quantity:l.qty})),p_delivery:d});
-    if(error){console.error(error);$('#e').textContent='↳ '+(/out_of_stock/.test(error.message)?'An item is sold out.':'Something went wrong on our side. Your cart is safe. Try again.');b.disabled=false;b.textContent='Place order';return}
+    if(error){console.error(error);$('#e').textContent='↳ '+(/out_of_stock/.test(error.message)?'An item is sold out.':'Could not place the order: '+error.message);b.disabled=false;b.textContent='Place order';return}
     num=data[0].order_number}
   else{num='OJA-'+(100001+Math.floor(Math.random()*900));}
   const t=total();localStorage.setItem('last',JSON.stringify({num,t,cart,d,saved:!!sb}));cart=[];save();location.hash='#/order'}
 function order(){const o=JSON.parse(localStorage.getItem('last')||'null');if(!o){location.hash='#/';return}
-  $('#app').innerHTML=`<h1>Order ${esc(o.num)} is in!</h1><table>${o.cart.map(l=>`<tr><td>${esc(l.name)} ${esc(l.label)} × ${l.qty}</td><td>${naira(l.price*l.qty)}</td></tr>`).join('')}</table>
+  $('#app').innerHTML=steps(2)+`<h1 style="margin-top:32px">Order ${esc(o.num)} is in!</h1><table>${o.cart.map(l=>`<tr><td>${esc(l.name)} ${esc(l.label)} × ${l.qty}</td><td>${naira(l.price*l.qty)}</td></tr>`).join('')}</table>
   <p>Delivery ${naira(o.t.d)} · <b>Total ${naira(o.t.t)}</b></p><p>Deliver to ${esc(o.d.address)}, ${esc(o.d.city)}. Pay on delivery. We'll call before delivery.</p>
   <p class="${o.saved?'ok':'err'}">${o.saved?'Your order is saved.':'Demo mode: this order was not saved to the database.'}</p>`}
-async function signin(){await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/#/checkout'}})}
-function authUI(){const a=$('#auth');if(!sb){a.style.display='none';return}a.textContent=user?'Sign out':'Sign in';a.onclick=async e=>{e.preventDefault();user?(await sb.auth.signOut()):signin()}}
-function route(){const h=location.hash;({'#/cart':cartPage,'#/checkout':checkout,'#/order':order})[h]?.()||home()}
+async function signin(){localStorage.setItem('ret','#/checkout');await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/'}})}
+function authUI(){const a=$('#auth');if(!sb){a.style.display='none';return}a.textContent=user?'Sign out':'Sign in';$('#ord').style.display=user?'inline-block':'none';a.onclick=async e=>{e.preventDefault();user?(await sb.auth.signOut()):signin()}}
+function route(){const h=location.hash;({'#/cart':cartPage,'#/checkout':checkout,'#/order':order,'#/orders':orders})[h]?.()||home()}
 (async()=>{save();if(sb){const {data}=await sb.auth.getSession();user=data.session?.user||null;
-  sb.auth.onAuthStateChange((_e,s)=>{user=s?.user||null;authUI();route()})}
+  sb.auth.onAuthStateChange((_e,s)=>{user=s?.user||null;authUI();const r=localStorage.getItem('ret');if(user&&r){localStorage.removeItem('ret');history.replaceState(null,'',location.pathname);location.hash=r}route()})}
   authUI();$('#app').innerHTML='<p><i>Fetching the shelves…</i></p>';await load();route()})();
 addEventListener('hashchange',route);
 </script></body></html>

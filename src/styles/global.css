@@ -1,0 +1,46 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+h1 {
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.05;
+  margin: 0 0 var(--space-4);
+}
+
+p {
+  max-width: 62ch;
+}
+
+:focus-visible {
+  outline: 2px solid var(--pepper);
+  outline-offset: 2px;
+}
+
+.page {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--space-8) var(--page-pad);
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 18px;
+  }
+
+  h1 {
+    font-size: 56px;
+  }
+}

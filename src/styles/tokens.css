@@ -1,0 +1,31 @@
+:root {
+  --paper: #F4EEE3;
+  --paper-deep: #EAE1D0;
+  --ink: #1A1714;
+  --ink-soft: #5C544B;
+  --pepper: #B8321E;
+  --paper-on-ink: #F4EEE3;
+  --leaf: #3E5A3A;
+
+  --font-serif: Fraunces, Georgia, 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', Consolas, 'Courier New', monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 112px;
+
+  --page-max: 1200px;
+  --page-pad: 20px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-pad: 40px;
+  }
+}

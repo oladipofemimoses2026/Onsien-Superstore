@@ -5,9 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Ọjà Pantry: Nigerian spices, sauces and soup essentials delivered to your door." />
     <title>Ọjà Pantry</title>
+    <script>
+      // Temporary: show any error on the page itself, in red.
+      function showProblem(text) {
+        var box = document.createElement('pre');
+        box.style.cssText = 'color:#b3261e;background:#fff3f2;padding:1rem;margin:1rem;white-space:pre-wrap;border:1px solid #b3261e';
+        box.textContent = 'PROBLEM: ' + text;
+        document.body.appendChild(box);
+      }
+      window.addEventListener('error', function (e) {
+        if (e.target && e.target !== window && (e.target.src || e.target.href)) {
+          showProblem('Could not load file: ' + (e.target.src || e.target.href));
+        } else {
+          showProblem((e.message || 'Unknown error') + (e.filename ? '\n' + e.filename + ':' + e.lineno : ''));
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) {
+        showProblem('Unhandled: ' + (e.reason && e.reason.message ? e.reason.message : e.reason));
+      });
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><p style="font-family:sans-serif;padding:2rem">Loading Ọjà Pantry…</p></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

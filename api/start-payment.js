@@ -60,6 +60,9 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error('start-payment failed:', err);
-    return res.status(500).json({ error: 'Could not start payment. Please try again.' });
+    // Temporary: show the real reason so we can fix it.
+    return res.status(500).json({
+      error: 'Could not start payment: ' + (err?.message || String(err)),
+    });
   }
 }

@@ -6,7 +6,9 @@ on:
     branches: [main]
     paths:
       - 'capacitor.config.json'
+      - 'package.json'
       - 'mobile/**'
+      - 'scripts/**'
       - '.github/workflows/android-apk.yml'
 
 jobs:
@@ -27,11 +29,18 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Install project and Capacitor packages
-        run: npm install --no-save @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
+      - name: Install packages
+        run: npm install
 
       - name: Create the Android project
-        run: npx cap add android
+        run: |
+          npx cap add android
+          npx cap sync android
+
+      - name: Add sign-in return link
+        run: |
+          node scripts/add-deep-link.mjs
+          grep -n "com.ojapantry.app" android/app/src/main/AndroidManifest.xml
 
       - name: Build the APK
         working-directory: android

@@ -1,0 +1,14 @@
+{
+  "appId": "com.ojapantry.app",
+  "appName": "Ọjà Pantry",
+  "webDir": "mobile/www",
+  "server": {
+    "url": "https://onsiensuperstore.vercel.app",
+    "allowNavigation": [
+      "onsiensuperstore.vercel.app",
+      "checkout.paystack.com",
+      "*.paystack.com",
+      "*.paystack.co"
+    ]
+  }
+}
